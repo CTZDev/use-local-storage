@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { Button } from "./Button";
+import { TextArea } from "./TextArea";
 
 interface Props {
   onNewTweet: (newTweet: string) => void;
@@ -7,8 +9,8 @@ interface Props {
 export const AddTweet: React.FC<Props> = ({ onNewTweet }) => {
   const [textTweet, setTextTweet] = useState("");
 
-  const handleChange = ({ target }: { target: HTMLTextAreaElement }) => {
-    setTextTweet(target.value);
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setTextTweet(e.target.value);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -20,18 +22,14 @@ export const AddTweet: React.FC<Props> = ({ onNewTweet }) => {
 
   return (
     <>
-      <form action="" onSubmit={handleSubmit}>
-        <label>
-          Tweet:
-          <textarea
-            name="txt_tweet"
-            cols={10}
-            rows={5}
-            value={textTweet}
-            onChange={handleChange}
-          ></textarea>
-        </label>
-        <button type="submit">Agregar</button>
+      <form action="/" onSubmit={handleSubmit} className="form-tweet">
+        <TextArea id="txt_tweet" textName="Tweet" value={textTweet} onChange={handleChange} />
+        <Button
+          type="submit"
+          textButton="Agregar"
+          hasIcon
+          iconProps={{ icon: "/add.svg", altIcon: "Agregar Tweet" }}
+        />
       </form>
     </>
   );
