@@ -3,5 +3,5 @@ interface Props {
 }
 
 export const TweetContainer: React.FC<Props> = ({ children }) => {
-  return <main>{children}</main>;
+  return <main className="tweet-container">{children}</main>;
 };
