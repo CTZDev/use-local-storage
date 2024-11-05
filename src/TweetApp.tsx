@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./TweetApp.css";
 import { AddTweet } from "./components/AddTweet";
-import { Header } from "./components/Header";
+import { Header } from "./components/Headers/Header";
 import ListTweets from "./components/ListTweets";
 import { TweetContainer } from "./components/TweetContainer";
 import type { Tweet } from "./types/Tweet";
@@ -43,12 +43,24 @@ const TweetApp: React.FC = () => {
     setTweets(updatedTweets);
   };
 
+  const handleDeleteTweet = (idDeleteTweet: string) => {
+    const updatedTweets = tweets.filter((tweet) => {
+      if (tweet.id !== idDeleteTweet) return tweet;
+    });
+
+    setTweets(updatedTweets);
+  };
+
   return (
     <>
-      <Header />
+      <Header title="Local Storage" />
       <TweetContainer>
         <AddTweet onNewTweet={handleNewTweet} />
-        <ListTweets tweets={tweets} onUpdateTweeet={handleUpdateTweet} />
+        <ListTweets
+          tweets={tweets}
+          onUpdateTweeet={handleUpdateTweet}
+          onDeleteTweet={handleDeleteTweet}
+        />
       </TweetContainer>
     </>
   );
