@@ -15,30 +15,35 @@ interface Props {
   data?: ComponentDetail;
   named?: string;
   textButton?: string;
+  onlyIcon?: boolean;
   hasIcon?: boolean;
-  iconProps: Icon;
+  iconProps?: Icon;
   onClick?: () => void;
   onSubmit?: (e: React.FormEvent) => void;
   classBtn?: string;
 }
 
 export const Button = forwardRef<HTMLButtonElement, Props>(function Button(
-  { type = "button", named, data, textButton, hasIcon, iconProps, onClick, classBtn },
+  { type = "button", named, data, textButton, onlyIcon, hasIcon, iconProps, onClick, classBtn },
   ref
 ) {
   return (
     <button
       ref={ref}
       type={type}
-      className={`btn ${classBtn}`}
+      className={classBtn}
       onClick={onClick}
       name={named}
       data-button={JSON.stringify(data)}
     >
-      <p className="btn-icon">
-        {hasIcon && iconProps && <img src={iconProps.icon} alt={iconProps.altIcon} />}
-        {textButton}
-      </p>
+      {onlyIcon ? (
+        hasIcon && iconProps && <img src={iconProps.icon} alt={iconProps.altIcon} />
+      ) : (
+        <p className="btn-icon">
+          {hasIcon && iconProps && <img src={iconProps.icon} alt={iconProps.altIcon} />}
+          {textButton}
+        </p>
+      )}
     </button>
   );
 });
