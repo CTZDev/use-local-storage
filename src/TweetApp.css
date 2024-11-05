@@ -282,3 +282,26 @@ body {
     outline: 2px solid var(--color-primary);
   }
 }
+
+.btn-edit,
+.btn-delete {
+  display: inline-block;
+}
+
+.btn-edit {
+  margin-right: 0.4rem;
+}
+
+.btn-delete {
+  margin-left: 0.4rem;
+}
+
+.modal-delete-title {
+  color: var(--color-primary);
+  padding: 1rem;
+}
+
+.modal-delete-buttons {
+  display: flex;
+  gap: 1rem;
+}
