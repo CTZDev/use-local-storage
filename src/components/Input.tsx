@@ -1,16 +1,16 @@
 interface Props {
-  id: string;
+  named: string;
   textName: string;
   value?: string;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export const Input: React.FC<Props> = ({ textName, id, value, onChange }) => {
+export const Input: React.FC<Props> = ({ textName, named, value, onChange }) => {
   return (
     <label className="text-label">
       {textName}
       <input
-        name={id}
+        name={named}
         style={{ display: "block" }}
         className="input-container"
         value={value}
