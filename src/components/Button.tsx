@@ -1,3 +1,6 @@
+import { forwardRef } from "react";
+import type { ComponentDetail } from "../types/ComponentDetail";
+
 type OptionButton = "button" | "reset" | "submit";
 
 type Icon = {
@@ -8,7 +11,9 @@ type Icon = {
 };
 
 interface Props {
-  type: OptionButton;
+  type?: OptionButton;
+  data?: ComponentDetail;
+  named?: string;
   textButton?: string;
   hasIcon?: boolean;
   iconProps: Icon;
@@ -17,21 +22,23 @@ interface Props {
   classBtn?: string;
 }
 
-export const Button: React.FC<Props> = ({
-  type,
-  textButton,
-  hasIcon,
-  iconProps,
-  onClick,
-  onSubmit,
-  classBtn,
-}) => {
+export const Button = forwardRef<HTMLButtonElement, Props>(function Button(
+  { type = "button", named, data, textButton, hasIcon, iconProps, onClick, classBtn },
+  ref
+) {
   return (
-    <button type={type} className={`btn ${classBtn}`} onClick={onClick} onSubmit={onSubmit}>
+    <button
+      ref={ref}
+      type={type}
+      className={`btn ${classBtn}`}
+      onClick={onClick}
+      name={named}
+      data-button={JSON.stringify(data)}
+    >
       <p className="btn-icon">
         {hasIcon && iconProps && <img src={iconProps.icon} alt={iconProps.altIcon} />}
         {textButton}
       </p>
     </button>
   );
-};
+});
