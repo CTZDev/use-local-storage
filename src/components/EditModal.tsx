@@ -1,22 +1,27 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
+import type { ComponentDetail } from "../types/ComponentDetail";
+import type { Tweet } from "../types/Tweet";
 import { Button } from "./Button";
 import { Input } from "./Input";
-
-interface ComponentDetail {
-  id: string;
-  name: string;
-  description?: string;
-}
+type OptionElement = Tweet; // aqui colocar todos los que se usarian
 
 interface Props {
   idModal: string;
   element: ComponentDetail;
   isOpen: boolean;
   onClose?: () => void;
+  onUpdateValue: (updatedValue: OptionElement) => void;
 }
 
-export const EditModal: React.FC<Props> = ({ idModal, element, isOpen, onClose }) => {
+export const EditModal: React.FC<Props> = ({
+  idModal,
+  element,
+  isOpen,
+  onClose,
+  onUpdateValue,
+}) => {
   const [updateValue, setUpdateValue] = useState(element.name);
+  const btnEditRef = useRef<HTMLButtonElement>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUpdateValue(e.target.value);
@@ -24,6 +29,15 @@ export const EditModal: React.FC<Props> = ({ idModal, element, isOpen, onClose }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const dataBtn = btnEditRef.current?.getAttribute("data-button");
+    const json = dataBtn && JSON.parse(dataBtn);
+    const { id } = json;
+    const updatedValue = {
+      id,
+      name: updateValue.trim(),
+    };
+    onUpdateValue(updatedValue);
+    handleClose();
   };
 
   const handleClose = () => {
@@ -38,19 +52,23 @@ export const EditModal: React.FC<Props> = ({ idModal, element, isOpen, onClose }
             <Button
               type="button"
               classBtn="btn-closeModal"
+              named="btn-close"
               hasIcon
               iconProps={{ icon: "/close.svg", altIcon: "Close Modal" }}
               onClick={() => handleClose()}
             />
             <Input
               textName="Editar: "
-              id={element.id}
+              named={element.id}
               value={updateValue}
               onChange={handleChange}
             />
             <Button
+              ref={btnEditRef}
               type="submit"
+              data={element}
               classBtn="btn"
+              named="btn-edit"
               textButton="Guardar"
               hasIcon
               iconProps={{ icon: "/edit.svg", altIcon: "Editar" }}
