@@ -4,11 +4,11 @@ import { EditModal } from "./EditModal";
 
 interface Props {
   tweets: Array<Tweet>;
+  onUpdateTweeet: (updatedValue: Tweet) => void;
 }
 
-const ListTweets: React.FC<Props> = ({ tweets }) => {
+const ListTweets: React.FC<Props> = ({ tweets, onUpdateTweeet }) => {
   const [activeTweetId, setActiveTweetId] = useState<string | null>(null);
-
   const openModal = (tweetId: string) => {
     setActiveTweetId(tweetId);
   };
@@ -61,6 +61,7 @@ const ListTweets: React.FC<Props> = ({ tweets }) => {
                       element={tweet}
                       isOpen={true}
                       onClose={closeModal}
+                      onUpdateValue={onUpdateTweeet}
                     />
                   )}
                 </td>
