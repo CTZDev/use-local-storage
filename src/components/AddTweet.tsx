@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button } from "./Button";
-import { TextArea } from "./TextArea";
+import { TextArea } from "./Inputs/TextArea";
 
 interface Props {
   onNewTweet: (newTweet: string) => void;
@@ -23,8 +23,15 @@ export const AddTweet: React.FC<Props> = ({ onNewTweet }) => {
   return (
     <>
       <form action="/" onSubmit={handleSubmit} className="form-tweet">
-        <TextArea id="txt_tweet" textName="Tweet" value={textTweet} onChange={handleChange} />
+        <TextArea
+          id="txt_tweet"
+          textName="Tweet"
+          value={textTweet}
+          onChange={handleChange}
+          placeholder="Ingresa el Tweet que deseas compartir ..."
+        />
         <Button
+          classBtn="btn"
           type="submit"
           textButton="Agregar"
           hasIcon
