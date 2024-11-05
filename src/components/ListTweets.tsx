@@ -1,20 +1,33 @@
 import { useState } from "react";
 import type { Tweet } from "../types/Tweet";
-import { EditModal } from "./EditModal";
+import { Button } from "./Button";
+import { DeleteModal } from "./Modals/DeleteModal";
+import { EditModal } from "./Modals/EditModal";
 
 interface Props {
   tweets: Array<Tweet>;
   onUpdateTweeet: (updatedValue: Tweet) => void;
+  onDeleteTweet: (idDeleteValue: string) => void;
 }
 
-const ListTweets: React.FC<Props> = ({ tweets, onUpdateTweeet }) => {
-  const [activeTweetId, setActiveTweetId] = useState<string | null>(null);
-  const openModal = (tweetId: string) => {
-    setActiveTweetId(tweetId);
+const ListTweets: React.FC<Props> = ({ tweets, onUpdateTweeet, onDeleteTweet }) => {
+  const [activeEditTweetId, setActiveEditTweetId] = useState<string | null>(null);
+  const [activeDeleteTweetId, setActiveDeleteTweetId] = useState<string | null>(null);
+
+  const openModalEdit = (tweetId: string) => {
+    setActiveEditTweetId(tweetId);
   };
 
-  const closeModal = () => {
-    setActiveTweetId(null);
+  const closeModalEdit = () => {
+    setActiveEditTweetId(null);
+  };
+
+  const openModalDelete = (tweetId: string) => {
+    setActiveDeleteTweetId(tweetId);
+  };
+
+  const closeModalDelete = () => {
+    setActiveDeleteTweetId(null);
   };
 
   return (
@@ -24,7 +37,7 @@ const ListTweets: React.FC<Props> = ({ tweets, onUpdateTweeet }) => {
         <thead>
           <tr className="table-title">
             <th className="table-title-option">TWEET</th>
-            <th className="table-title-option">OPCIONES</th>
+            <th className="table-title-option">ACCIONES</th>
           </tr>
         </thead>
         <tbody>
@@ -40,28 +53,45 @@ const ListTweets: React.FC<Props> = ({ tweets, onUpdateTweeet }) => {
               <tr key={tweet.id} className="table-items">
                 <td className="table-item">{tweet.name}</td>
                 <td className="table-item table-item-buttons">
-                  <button
-                    style={{ display: "inline-block", marginRight: "0.4rem" }}
-                    title="Editar"
-                    id={tweet.id}
-                    onClick={() => openModal(tweet.id)}
-                  >
-                    <img src="/edit.svg" alt="Edit Tweet" />
-                  </button>
-                  <button
-                    style={{ display: "inline-block", marginLeft: "0.4rem" }}
-                    title="Eliminar"
-                    id={tweet.id}
-                  >
-                    <img src="/delete.svg" alt="Delete Tweet" />
-                  </button>
-                  {activeTweetId === tweet.id && (
+                  <Button
+                    onlyIcon
+                    type="submit"
+                    classBtn="btn-edit"
+                    hasIcon
+                    iconProps={{ icon: "/edit.svg", altIcon: "Edit Tweet" }}
+                    named={tweet.id}
+                    onClick={() => openModalEdit(tweet.id)}
+                  />
+
+                  <Button
+                    onlyIcon
+                    type="submit"
+                    classBtn="btn-delete"
+                    hasIcon
+                    iconProps={{ icon: "/delete.svg", altIcon: "Delete Tweet" }}
+                    named={tweet.id}
+                    onClick={() => openModalDelete(tweet.id)}
+                  />
+
+                  {/* For Edit values */}
+                  {activeEditTweetId === tweet.id && (
                     <EditModal
                       idModal={tweet.id}
                       element={tweet}
                       isOpen={true}
-                      onClose={closeModal}
+                      onClose={closeModalEdit}
                       onUpdateValue={onUpdateTweeet}
+                    />
+                  )}
+
+                  {/* For Delete values */}
+                  {activeDeleteTweetId === tweet.id && (
+                    <DeleteModal
+                      idModal={tweet.id}
+                      element={tweet}
+                      isOpen={true}
+                      onClose={closeModalDelete}
+                      onDeleteValue={onDeleteTweet}
                     />
                   )}
                 </td>
